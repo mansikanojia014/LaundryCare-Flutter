@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../config/api_config.dart';
 import '../../services/api_service.dart';
+import '../auth/login_screen.dart';
 
 class EmployeeDashboard extends StatefulWidget {
   const EmployeeDashboard({super.key});
@@ -107,8 +108,8 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
 
     if (!mounted) return;
 
-    Navigator.of(context).pushNamedAndRemoveUntil(
-      '/login',
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
       (route) => false,
     );
   }
