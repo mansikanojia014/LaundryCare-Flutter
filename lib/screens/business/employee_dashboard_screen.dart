@@ -601,9 +601,6 @@ class _EmployeeOrderDetailsScreenState
     final status =
         _order['status']?.toString() ?? 'received';
 
-    final paymentStatus =
-        _order['payment_status']?.toString() ?? 'pending';
-
     final paymentMethod =
         _order['payment_method']?.toString() ?? '-';
 
@@ -720,13 +717,13 @@ class _EmployeeOrderDetailsScreenState
                         return ListTile(
                           contentPadding: EdgeInsets.zero,
                           title: Text(
-                            '$cloth ÃƒÂ¯Ã‚Â¿Ã‚Â½ $service',
+                            '$cloth — $service',
                           ),
                           subtitle: Text(
                             'Quantity: $quantity piece(s)',
                           ),
                           trailing: Text(
-                            '?$lineTotal',
+                            '₹$lineTotal',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
@@ -750,7 +747,7 @@ class _EmployeeOrderDetailsScreenState
                     ),
                   ),
                   Text(
-                    '?$total',
+                    '₹$total',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -801,7 +798,7 @@ class _EmployeeOrderDetailsScreenState
                               (value) =>
                                   value.isNotEmpty,
                             )
-                            .join(' ÃƒÂ¯Ã‚Â¿Ã‚Â½ '),
+                            .join(' • '),
                       ),
                     );
                   }).toList(),
