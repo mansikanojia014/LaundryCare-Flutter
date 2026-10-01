@@ -124,6 +124,13 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
     return text;
   }
 
+  List<String> _availableStatusOptions(String current) {
+    final index = _orderStatuses.indexOf(current);
+    if (index < 0) return [current];
+    if (index >= _orderStatuses.length - 1) return [current];
+    return [current, _orderStatuses[index + 1]];
+  }
+
   String _statusLabel(String value) {
     return value
         .split('_')
@@ -462,14 +469,6 @@ class _EmployeeOrderDetailsScreenState
     'ready',
     'out_for_delivery',
     'completed',
-    'cancelled',
-  ];
-
-  static const List<String> _paymentStatuses = [
-    'pending',
-    'paid',
-    'verification_pending',
-    'failed',
   ];
 
   @override
@@ -651,7 +650,7 @@ class _EmployeeOrderDetailsScreenState
                       labelText: 'Order status',
                       border: OutlineInputBorder(),
                     ),
-                    items: _orderStatuses
+                    items: _availableStatusOptions(status)
                         .map(
                           (item) => DropdownMenuItem<String>(
                             value: item,
