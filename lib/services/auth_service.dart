@@ -15,7 +15,7 @@ class AuthService {
       body: {
         'email': email.trim().toLowerCase(),
         'password': password,
-        if (role != null) 'role': role,
+        'role': ?role,
         'rememberLogin': rememberLogin,
       },
     );
@@ -35,7 +35,7 @@ class AuthService {
         'fullName': fullName.trim(),
         'email': email.trim().toLowerCase(),
         'password': password,
-        if (phone != null && phone.trim().isNotEmpty) 'phone': phone.trim(),
+        'phone': ?phone?.trim(),
       },
     );
 
