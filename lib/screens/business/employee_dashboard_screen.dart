@@ -124,13 +124,6 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
     return text;
   }
 
-  List<String> _availableStatusOptions(String current) {
-    final index = _orderStatuses.indexOf(current);
-    if (index < 0) return [current];
-    if (index >= _orderStatuses.length - 1) return [current];
-    return [current, _orderStatuses[index + 1]];
-  }
-
   String _statusLabel(String value) {
     return value
         .split('_')
@@ -478,6 +471,13 @@ class _EmployeeOrderDetailsScreenState
     _order = Map<String, dynamic>.from(widget.order);
   }
 
+  List<String> _availableStatusOptions(String current) {
+    final index = _orderStatuses.indexOf(current);
+    if (index < 0) return [current];
+    if (index >= _orderStatuses.length - 1) return [current];
+    return [current, _orderStatuses[index + 1]];
+  }
+
   String _statusLabel(String value) {
     return value
         .split('_')
@@ -600,9 +600,6 @@ class _EmployeeOrderDetailsScreenState
 
     final status =
         _order['status']?.toString() ?? 'received';
-
-    final paymentMethod =
-        _order['payment_method']?.toString() ?? '-';
 
     final total =
         _order['total_amount']?.toString() ?? '0.00';
