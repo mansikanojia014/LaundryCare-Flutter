@@ -110,12 +110,13 @@ class _CustomerServicesScreenState
       (item) => item['id'].toString() == _selectedServiceId,
     );
 
-    final price = double.tryParse(
-          service['price'].toString(),
+    final clothPrice = double.tryParse(clothType['price']?.toString() ?? '') ?? 0;
+    final servicePrice = double.tryParse(
+          (service['servicePrice'] ?? service['service_price'] ?? service['price'])?.toString() ?? '',
         ) ??
         0;
-
-    final itemTotal = price * _quantity;
+    final unitPrice = clothPrice + servicePrice;
+    final itemTotal = unitPrice * _quantity;
 
     setState(() {
       _orderItems.add({
@@ -123,7 +124,9 @@ class _CustomerServicesScreenState
         'clothTypeName': clothType['name'],
         'serviceId': service['id'],
         'serviceName': service['name'],
-        'unitPrice': price,
+        'clothPrice': clothPrice,
+        'servicePrice': servicePrice,
+        'unitPrice': unitPrice,
         'quantity': _quantity,
         'total': itemTotal,
       });
@@ -224,7 +227,7 @@ class _CustomerServicesScreenState
                         return DropdownMenuItem<String>(
                           value: cloth['id'].toString(),
                           child: Text(
-                            '${cloth['name']} â€” ?${cloth['price']}',
+                            '${cloth['name']} — ₹${cloth['price']}',
                           ),
                         );
                       }).toList(),
@@ -267,7 +270,7 @@ class _CustomerServicesScreenState
                           return DropdownMenuItem<String>(
                             value: service['id'].toString(),
                             child: Text(
-                              '${service['name']} â€” ?${service['price']}',
+                              '${service['name']} — ₹${service['servicePrice'] ?? service['service_price'] ?? service['price']}',
                             ),
                           );
                         }).toList(),
@@ -351,18 +354,18 @@ class _CustomerServicesScreenState
                           return Card(
                             child: ListTile(
                               title: Text(
-                                '${item['clothTypeName']} â€” ${item['serviceName']}',
+                                '${item['clothTypeName']} — ${item['serviceName']}',
                               ),
                               subtitle: Text(
-                                '${item['quantity']} piece(s) Ã— '
-                                '?${item['unitPrice']}',
+                                '${item['quantity']} piece(s) × '
+                                '₹${item['unitPrice']}',
                               ),
                               trailing: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    '?${double.parse(item['total'].toString()).toStringAsFixed(2)}',
+                                    '₹${double.parse(item['total'].toString()).toStringAsFixed(2)}',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -401,7 +404,7 @@ class _CustomerServicesScreenState
                                 ),
                               ),
                               Text(
-                                '?${_grandTotal.toStringAsFixed(2)}',
+                                '₹${_grandTotal.toStringAsFixed(2)}',
                                 style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
