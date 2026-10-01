@@ -44,7 +44,7 @@ class _BusinessDiscountsScreenState extends State<BusinessDiscountsScreen> {
             try {
               final body=<String,dynamic>{'code':code.text.trim(),'percent':double.parse(percent.text.trim()),'active':true,if(until.text.trim().isNotEmpty)'validUntil':until.text.trim()};
               final id=item?['id']?.toString();
-              if(id==null){await _api.post(ApiConfig.businessDiscounts,body:body);}else{await _api.patch(ApiConfig.businessDiscounts + '/' + id,body:body);}
+              if(id==null){await _api.post(ApiConfig.businessDiscounts,body:body);}else{await _api.patch('${ApiConfig.businessDiscounts}/$id',body:body);}
               if(ctx.mounted)Navigator.pop(ctx,true);
             } catch(e) { if(ctx.mounted)ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content:Text(e.toString()))); }
           },child:const Text('Save')),
@@ -56,7 +56,7 @@ class _BusinessDiscountsScreenState extends State<BusinessDiscountsScreen> {
   }
   Future<void> _toggle(Map<String,dynamic> d) async {
     final id=d['id']?.toString(); if(id==null)return;
-    try {await _api.patch(ApiConfig.businessDiscounts + '/' + id + '/status',body:{'active':d['active']!=true});_load();}
+    try {await _api.patch('${ApiConfig.businessDiscounts}/$id/status',body:{'active':d['active']!=true});_load();}
     catch(e){if(mounted)ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text(e.toString())));}
   }
   @override Widget build(BuildContext context)=>Scaffold(
