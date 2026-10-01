@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import 'package:flutter_app/providers/auth_provider.dart';
 import 'screens/auth/welcome_screen.dart';
-import 'screens/auth/login_screen.dart';
 import 'screens/customer/customer_dashboard.dart';
 import 'screens/business/business_dashboard.dart';
 import 'screens/business/employee_dashboard_screen.dart';
