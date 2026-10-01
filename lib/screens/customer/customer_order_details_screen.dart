@@ -27,6 +27,8 @@ class _CustomerOrderDetailsScreenState
       TextEditingController();
   final TextEditingController _upiController =
       TextEditingController();
+  final TextEditingController _discountController =
+      TextEditingController();
 
   List<Map<String, dynamic>> _addresses = [];
 
@@ -56,6 +58,7 @@ class _CustomerOrderDetailsScreenState
   void dispose() {
     _notesController.dispose();
     _upiController.dispose();
+    _discountController.dispose();
     super.dispose();
   }
 
@@ -311,6 +314,9 @@ class _CustomerOrderDetailsScreenState
         dropoffTime: _apiTime(_dropoffTime!),
         items: items,
         paymentMethod: _paymentMethod,
+        discountCode: _discountController.text.trim().isEmpty
+            ? null
+            : _discountController.text.trim(),
         upiTransactionId: _paymentMethod == 'upi'
             ? _upiController.text.trim()
             : null,
@@ -600,6 +606,22 @@ class _CustomerOrderDetailsScreenState
                           const SizedBox(height: 20),
 
                           Text(
+                            'Discount code',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 8),
+                          TextField(
+                            controller: _discountController,
+                            textCapitalization: TextCapitalization.characters,
+                            decoration: const InputDecoration(
+                              hintText: 'Optional discount code',
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          Text(
                             'Special instructions',
                             style: Theme.of(context)
                                 .textTheme
@@ -639,7 +661,7 @@ class _CustomerOrderDetailsScreenState
                                     ),
                                   ),
                                   Text(
-                                    '?${widget.total.toStringAsFixed(2)}',
+                                    '₹${widget.total.toStringAsFixed(2)}',
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleLarge,
