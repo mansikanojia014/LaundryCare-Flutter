@@ -72,7 +72,7 @@ class _BusinessDiscountsScreenState extends State<BusinessDiscountsScreen> {
           final percentText=(d['percent']??0).toString();
           return Card(child:ListTile(
             title:Text(d['code']?.toString()??'Discount',style:const TextStyle(fontWeight:FontWeight.bold)),
-            subtitle:Text(percentText + '% • ' + expiry + '\n' + (active?'Active':'Inactive')),
+            subtitle:Text('$percentText% • $expiry\n${active ? 'Active' : 'Inactive'}'),
             trailing:PopupMenuButton<String>(onSelected:(v){if(v=='edit')_form(d);if(v=='toggle')_toggle(d);},itemBuilder:(_)=>[const PopupMenuItem(value:'edit',child:Text('Edit')),PopupMenuItem(value:'toggle',child:Text(active?'Deactivate':'Activate'))]),
           ));
         }),
