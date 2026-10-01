@@ -82,10 +82,13 @@ class AuthProvider extends ChangeNotifier {
         return false;
       }
 
-      await _storage.write(
-        key: 'jwt_token',
-        value: token,
-      );
+      await _storage.delete(key: 'jwt_token');
+      if (rememberLogin) {
+        await _storage.write(
+          key: 'jwt_token',
+          value: token,
+        );
+      }
 
       _user = response['user'];
       _isAuthenticated = true;
