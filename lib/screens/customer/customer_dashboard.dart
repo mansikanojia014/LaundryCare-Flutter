@@ -2,10 +2,21 @@ import 'package:flutter/material.dart';
 
 import 'customer_addresses_screen.dart';
 import 'customer_profile_screen.dart';
+import 'customer_orders_screen.dart';
+import '../../providers/auth_provider.dart';
+import 'package:provider/provider.dart';
+import '../auth/login_screen.dart';
 import 'package:flutter_app/screens/customer/customer_services_screen.dart';
 
 class CustomerDashboard extends StatelessWidget {
   const CustomerDashboard({super.key});
+
+  void _openOrders(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const CustomerOrdersScreen()),
+    );
+  }
 
   void _openNewOrder(BuildContext context) {
     Navigator.push(
@@ -23,7 +34,7 @@ class CustomerDashboard extends StatelessWidget {
         title: const Text('LaundryCare'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => _openOrders(context),
             icon: const Icon(Icons.notifications_outlined),
           ),
           IconButton(
@@ -36,6 +47,18 @@ class CustomerDashboard extends StatelessWidget {
               );
             },
             icon: const Icon(Icons.person_outline),
+          ),
+          IconButton(
+            tooltip: 'Logout',
+            onPressed: () async {
+              await context.read<AuthProvider>().logout();
+              if (!context.mounted) return;
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
+                (route) => false,
+              );
+            },
+            icon: const Icon(Icons.logout),
           ),
         ],
       ),
@@ -68,7 +91,7 @@ class CustomerDashboard extends StatelessWidget {
                 icon: Icons.receipt_long_outlined,
                 title: 'My Orders',
                 subtitle: 'View your orders and order history',
-                onTap: () {},
+                onTap: () => _openOrders(context),
               ),
               const SizedBox(height: 14),
               _DashboardCard(
@@ -120,7 +143,7 @@ class CustomerDashboard extends StatelessWidget {
                     child: _QuickAction(
                       icon: Icons.track_changes_outlined,
                       label: 'Track Order',
-                      onTap: () {},
+                      onTap: () => _openOrders(context),
                     ),
                   ),
                 ],
