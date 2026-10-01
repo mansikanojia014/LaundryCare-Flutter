@@ -454,7 +454,6 @@ class _EmployeeOrderDetailsScreenState
   late Map<String, dynamic> _order;
 
   bool _updatingOrderStatus = false;
-  bool _updatingPaymentStatus = false;
 
   static const List<String> _orderStatuses = [
     'received',
@@ -595,56 +594,6 @@ class _EmployeeOrderDetailsScreenState
     }
   }
 
-  Future<void> _updatePaymentStatus(String? status) async {
-    if (status == null || status.isEmpty) return;
-
-    final id = _order['id']?.toString();
-
-    if (id == null) return;
-
-    setState(() {
-      _updatingPaymentStatus = true;
-    });
-
-    try {
-      final response = await _api.patch(
-        '${ApiConfig.orders}/$id/payment-status',
-        body: {
-          'paymentStatus': status,
-        },
-      );
-
-      if (!mounted) return;
-
-      final returnedOrder = response['order'];
-
-      setState(() {
-        _order['payment_status'] = returnedOrder is Map
-            ? returnedOrder['payment_status'] ?? status
-            : status;
-        _updatingPaymentStatus = false;
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Payment status updated'),
-        ),
-      );
-    } catch (e) {
-      if (!mounted) return;
-
-      setState(() {
-        _updatingPaymentStatus = false;
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(_cleanError(e)),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final orderNumber =
@@ -715,45 +664,6 @@ class _EmployeeOrderDetailsScreenState
                         : _updateOrderStatus,
                   ),
                   if (_updatingOrderStatus)
-                    const Padding(
-                      padding: EdgeInsets.only(top: 12),
-                      child: LinearProgressIndicator(),
-                    ),
-                ],
-              ),
-            ),
-
-            _sectionCard(
-              title: 'Payment',
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Method: ${_statusLabel(paymentMethod)}',
-                  ),
-                  const SizedBox(height: 12),
-                  DropdownButtonFormField<String>(
-                    initialValue:
-                        _paymentStatuses.contains(paymentStatus)
-                            ? paymentStatus
-                            : null,
-                    decoration: const InputDecoration(
-                      labelText: 'Payment status',
-                      border: OutlineInputBorder(),
-                    ),
-                    items: _paymentStatuses
-                        .map(
-                          (item) => DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(_statusLabel(item)),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: _updatingPaymentStatus
-                        ? null
-                        : _updatePaymentStatus,
-                  ),
-                  if (_updatingPaymentStatus)
                     const Padding(
                       padding: EdgeInsets.only(top: 12),
                       child: LinearProgressIndicator(),
