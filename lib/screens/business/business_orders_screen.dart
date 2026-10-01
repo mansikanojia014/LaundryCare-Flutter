@@ -294,7 +294,46 @@ class _BusinessOrderDetailsScreenState
         widget.order[camel]?.toString();
   }
 
+  Future<String?> _askStatusReason(String current, String next) async {
+    const reasons = [
+      'Wrong status selected',
+      'Customer requested correction',
+      'Order moved too early',
+      'Operational mistake',
+      'Other',
+    ];
+    final isReverse = _statusIndex(next) < _statusIndex(current);
+    if (!isReverse) return null;
+    String selected = reasons.first;
+    return showDialog<String>(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setDialogState) => AlertDialog(
+          title: const Text('Reason for status reversal'),
+          content: DropdownButtonFormField<String>(
+            initialValue: selected,
+            items: reasons.map((r) => DropdownMenuItem(value: r, child: Text(r))).toList(),
+            onChanged: (v) { if (v != null) setDialogState(() => selected = v); },
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+            FilledButton(onPressed: () => Navigator.pop(ctx, selected), child: const Text('Continue')),
+          ],
+        ),
+      ),
+    );
+  }
+
+  int _statusIndex(String status) {
+    const order = ['received', 'picked_up', 'washing', 'ready', 'out_for_delivery', 'completed'];
+    return order.indexOf(status);
+  }
+
   Future<void> _updateOrderStatus(String status) async {
+    final current = _value('status', 'status') ?? 'received';
+    if (status == 'cancelled') return;
+    final reason = await _askStatusReason(current, status);
+    if (_statusIndex(status) < _statusIndex(current) && reason == null) return;
     final id = widget.order['id']?.toString();
 
     if (id == null) return;
@@ -308,6 +347,7 @@ class _BusinessOrderDetailsScreenState
         '${ApiConfig.orders}/$id/status',
         body: {
           'status': status,
+          if (reason != null) 'reason': reason,
         },
       );
 
@@ -552,7 +592,7 @@ class _BusinessOrderDetailsScreenState
                   ),
                 )
                 .toList(),
-            onChanged: _updatingStatus
+            onChanged: _updatingStatus || status == 'cancelled'
                 ? null
                 : (value) {
                     if (value != null && value != status) {
