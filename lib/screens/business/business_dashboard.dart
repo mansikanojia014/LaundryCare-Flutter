@@ -7,6 +7,7 @@ import 'business_services_screen.dart';
 import 'business_cloth_types_screen.dart';
 import 'business_employees_screen.dart';
 import 'business_settings_screen.dart';
+import '../auth/login_screen.dart';
 
 class BusinessDashboard extends StatelessWidget {
   const BusinessDashboard({super.key});
@@ -16,8 +17,8 @@ class BusinessDashboard extends StatelessWidget {
 
     if (!context.mounted) return;
 
-    Navigator.of(context).pushNamedAndRemoveUntil(
-      '/login',
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
       (route) => false,
     );
   }
