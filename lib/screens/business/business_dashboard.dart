@@ -7,6 +7,9 @@ import 'business_services_screen.dart';
 import 'business_cloth_types_screen.dart';
 import 'business_employees_screen.dart';
 import 'business_settings_screen.dart';
+import 'business_customers_screen.dart';
+import 'business_reports_screen.dart';
+import 'business_discounts_screen.dart';
 import '../auth/login_screen.dart';
 
 class BusinessDashboard extends StatelessWidget {
@@ -78,6 +81,27 @@ class BusinessDashboard extends StatelessWidget {
             'Employees',
             'Manage employee accounts',
             const BusinessEmployeesScreen(),
+          ),
+          _tile(
+            context,
+            Icons.people_outline,
+            'Customers',
+            'View customer accounts and contact details',
+            const BusinessCustomersScreen(),
+          ),
+          _tile(
+            context,
+            Icons.discount_outlined,
+            'Discounts',
+            'Create and manage discount codes',
+            const BusinessDiscountsScreen(),
+          ),
+          _tile(
+            context,
+            Icons.bar_chart,
+            'Reports',
+            'View business reporting data',
+            const BusinessReportsScreen(),
           ),
           _tile(
             context,
