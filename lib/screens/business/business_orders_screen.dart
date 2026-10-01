@@ -347,7 +347,7 @@ class _BusinessOrderDetailsScreenState
         '${ApiConfig.orders}/$id/status',
         body: {
           'status': status,
-          if (reason != null) 'reason': reason,
+          'reason': ?reason,
         },
       );
 
