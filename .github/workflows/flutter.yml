@@ -1,0 +1,19 @@
+name: Flutter checks
+
+on:
+  push:
+    branches: ["hatchable-v50-alignment"]
+  pull_request:
+    branches: ["main", "hatchable-v50-alignment"]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.5"
+          channel: stable
+      - run: flutter pub get
+      - run: flutter analyze
