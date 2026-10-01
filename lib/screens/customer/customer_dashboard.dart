@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'customer_addresses_screen.dart';
 import 'customer_profile_screen.dart';
 import 'customer_orders_screen.dart';
+import 'customer_notifications_screen.dart';
 import '../../providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import '../auth/login_screen.dart';
@@ -34,7 +35,7 @@ class CustomerDashboard extends StatelessWidget {
         title: const Text('LaundryCare'),
         actions: [
           IconButton(
-            onPressed: () => _openOrders(context),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CustomerNotificationsScreen())),
             icon: const Icon(Icons.notifications_outlined),
           ),
           IconButton(
