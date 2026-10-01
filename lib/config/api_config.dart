@@ -38,6 +38,12 @@
   static const String businessSettings =
       '$baseUrl/business/settings';
 
+  static const String businessCustomers =
+      '$baseUrl/business/customers';
+
+  static const String businessReports =
+      '$baseUrl/business/reports';
+
   static const String businessServices =
       '$baseUrl/business/services';
 
